@@ -1,0 +1,24 @@
+{
+    "name": "virtuecenter/twitter",
+    "type": "library",
+    "description": "Cache system for tweets",
+    "keywords": ["Twittter", "Cache"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Mahoney",
+            "email": "ryan@virtuecenter.com",
+            "homepage": "http://www.virtuecenter.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+    	"php": ">=5.4.0",
+		"j7mbo/twitter-api-php": "dev-master",
+		"virtuecenter/cache": "dev-master",
+		"virtuecenter/db": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {"Twitter": "src/"}
+    }
+}
