@@ -1,6 +1,7 @@
 {
     "name": "virtuecenter/twitter",
     "type": "library",
+    "minimum-stability": "dev",
     "description": "Cache system for tweets",
     "keywords": ["Twittter", "Cache"],
     "license": "MIT",

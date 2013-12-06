@@ -3,16 +3,14 @@ namespace Twitter;
 
 class Twitter {
 	private $cache;
-	private $twitterGateway;
 	private $db;
 	private $root;
 	private $queue;
 	private $config;
 
-	public function __construct ($root, $twitterGateway, $cache, $queue, $db, $config) {
+	public function __construct ($root, $cache, $queue, $db, $config) {
 		$this->root = $root;
 		$this->cache = $cache;
-		$this->twitterGateway = $twitterGateway;
 		$this->queue = $queue;
 		$this->db = $db;
 	}
@@ -64,7 +62,7 @@ class Twitter {
                 $url = 'https://api.twitter.com/1.1/search/tweets.json';
                 $getfield = '?q=' . urldecode($value);
             }
-            $twitter = $this->twitterGateway($settings);
+            $twitter = new \TwitterAPIExchange($this->twitterGateway($settings));
             $twtData = $twitter->setGetfield($getfield)->buildOauth($url, $requestMethod)->performRequest();
 		} catch (\Exception $e) {
 			$cache->set($key, '', 0, $expire);
