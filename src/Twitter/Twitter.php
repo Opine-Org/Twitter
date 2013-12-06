@@ -2,16 +2,16 @@
 namespace Twitter;
 
 class Twitter {
-	private $memcache;
+	private $cache;
 	private $twitterGateway;
 	private $db;
 	private $root;
 	private $queue;
 	private $config;
 
-	public function __construct ($root, $twitterGateway, $memcache, $queue, $db, $config) {
+	public function __construct ($root, $twitterGateway, $cache, $queue, $db, $config) {
 		$this->root = $root;
-		$this->memcache = $memcache;
+		$this->cache = $cache;
 		$this->twitterGateway = $twitterGateway;
 		$this->queue = $queue;
 		$this->db = $db;
@@ -19,7 +19,7 @@ class Twitter {
 
 	public function tweets($value, $limit=10, $expire=600, $type='user') {
 		$key = $this->root . '-TWITTERFEED-'  . md5($type . '-' . $value);
-		$feed = $this->memcache->get($key);
+		$feed = $this->cache->get($key);
 		if ($feed === false) {
 			$this->queue->add('deferred', [
 				'value' => $value
@@ -67,14 +67,14 @@ class Twitter {
             $twitter = $this->twitterGateway($settings);
             $twtData = $twitter->setGetfield($getfield)->buildOauth($url, $requestMethod)->performRequest();
 		} catch (\Exception $e) {
-			$memcache->set($key, '', 0, $expire);
+			$cache->set($key, '', 0, $expire);
 			return false;
 		}
 		if ($twtData === false) {
-			$memcache->set($key, '', 0, $expire);
+			$cache->set($key, '', 0, $expire);
 			return false;
 		}
-		$memcache->set($key, $twtData, 0, $expire);
+		$cache->set($key, $twtData, 0, $expire);
 		$twtData = json_decode($twtData, true);
 		if (isset($twtData['error']) || !is_array($twtData) || count($twtData) == 0) {
 			return false;
