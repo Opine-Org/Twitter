@@ -13,6 +13,7 @@ class Twitter {
 		$this->cache = $cache;
 		$this->queue = $queue;
 		$this->db = $db;
+		$this->config = $config;
 	}
 
 	public function tweets($value, $limit=10, $expire=600, $type='user') {
@@ -37,7 +38,7 @@ class Twitter {
 		return $tweets['tweets'];
 	}
 
-	public function tweetsSave($type, $value, Array $tweets) {
+	public function save($type, $value, Array $tweets) {
 		$this->db->collection('tweets')->update(
 				['key' => $type . '-' . $value], 
 				['$set' => ['tweets' => $tweets]
@@ -62,19 +63,19 @@ class Twitter {
                 $url = 'https://api.twitter.com/1.1/search/tweets.json';
                 $getfield = '?q=' . urldecode($value);
             }
-            $twitter = new \TwitterAPIExchange($this->twitterGateway($settings));
+            $twitter = new \TwitterAPIExchange($settings);
             $twtData = $twitter->setGetfield($getfield)->buildOauth($url, $requestMethod)->performRequest();
 		} catch (\Exception $e) {
-			echo $e->getMessage();
-			exit;
-			$cache->set($key, '', 0, $expire);
+//FIXME: monolog?
+			$this->cache->set($key, '', 0, $expire);
 			return false;
 		}
+		var_dump($twtData);flush();
 		if ($twtData === false) {
-			$cache->set($key, '', 0, $expire);
+			$this->cache->set($key, '', 0, $expire);
 			return false;
 		}
-		$cache->set($key, $twtData, 0, $expire);
+		$this->cache->set($key, $twtData, 0, $expire);
 		$twtData = json_decode($twtData, true);
 		if (isset($twtData['error']) || !is_array($twtData) || count($twtData) == 0) {
 			return false;
