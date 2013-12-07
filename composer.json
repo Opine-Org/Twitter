@@ -16,6 +16,7 @@
     "require": {
     	"php": ">=5.4.0",
 		"j7mbo/twitter-api-php": "dev-master",
+        "nojimage/twitter-text-php": "dev-master",
 		"virtuecenter/cache": "dev-master",
 		"virtuecenter/db": "dev-master",
 		"virtuecenter/queue": "dev-master",
