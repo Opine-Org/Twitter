@@ -19,8 +19,8 @@ class Twitter {
 		$key = $this->root . '-TWITTERFEED-'  . md5($type . '-' . $value);
 		$feed = $this->cache->get($key);
 		if ($feed === false) {
-			$this->queue->add('deferred', [
-				'value' => $value
+			$this->queue->add('TweetsFetch', [
+				'value' => $value,
 				'expire' => $expire,
 				'type' => $type
 			]);
@@ -46,14 +46,14 @@ class Twitter {
 
 	public function externalFetch($value, $expire, $type='user') {
         $key = $this->root . '-TWITTERFEED-'  . md5($type . '-' . $value);
-		$config = $this->config->twitter();
+		$config = $this->config->twitter;
 		try {
-            $settings = array(
+            $settings = [
                 'oauth_access_token' => $config['oauth_access_token'],
                 'oauth_access_token_secret' => $config['oauth_access_token_secret'],
-                'consumer_key' => $cofig['consumer_key'],
+                'consumer_key' => $config['consumer_key'],
                 'consumer_secret' => $config['consumer_secret']
-            );
+            ];
             $requestMethod = 'GET';
             if ($type == 'user') {
                 $url = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
@@ -65,6 +65,8 @@ class Twitter {
             $twitter = new \TwitterAPIExchange($this->twitterGateway($settings));
             $twtData = $twitter->setGetfield($getfield)->buildOauth($url, $requestMethod)->performRequest();
 		} catch (\Exception $e) {
+			echo $e->getMessage();
+			exit;
 			$cache->set($key, '', 0, $expire);
 			return false;
 		}
