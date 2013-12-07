@@ -17,6 +17,9 @@ class Twitter {
 	}
 
 	public function tweets($value, $limit=10, $expire=600, $type='user') {
+		if (!in_array($type, ['user', 'search'])) {
+			throw new \Exception('invalid twitter API type: ' . $type);
+		}
 		$key = $this->root . '-TWITTERFEED-'  . md5($type . '-' . $value);
 		$feed = $this->cache->get($key);
 		if ($feed === false) {
@@ -39,10 +42,16 @@ class Twitter {
 	}
 
 	public function save($type, $value, Array $tweets) {
-		$this->db->collection('tweets')->update(
-				['key' => $type . '-' . $value], 
-				['$set' => ['tweets' => $tweets]
-			], ['upsert' => true]);
+		foreach ($tweets as $tweet) {
+			$tweet['key'] = $type . '-' . $value;
+			$tweet['created_date'] = new \MongoDate(strtotime($tweet['created_at']));
+			$this->db->collection('tweets')->update(
+				['id_str' => $tweet['id_str']], 
+				$tweet, 
+				['upsert' => true]
+			);
+		}
+		$this->db->collection('tweets')->ensureIndex(['key' => 1, 'id_str' => 1]);
 	}
 
 	public function externalFetch($value, $expire, $type='user') {
