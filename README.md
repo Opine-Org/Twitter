@@ -1,4 +1,4 @@
-twitter
+Twitter
 =======
 
-Queueing system for caching tweets
+Cache service for tweets

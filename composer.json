@@ -1,8 +1,8 @@
 {
-    "name": "virtuecenter/twitter",
+    "name": "opine/twitter",
     "type": "library",
     "minimum-stability": "dev",
-    "description": "Cache system for tweets",
+    "description": "Cache service for tweets",
     "keywords": ["Twittter", "Cache"],
     "license": "MIT",
     "authors": [
@@ -17,12 +17,12 @@
     	"php": ">=5.4.0",
 		"j7mbo/twitter-api-php": "dev-master",
         "nojimage/twitter-text-php": "dev-master",
-		"virtuecenter/cache": "dev-master",
-		"virtuecenter/db": "dev-master",
-		"virtuecenter/queue": "dev-master",
-		"virtuecenter/config": "dev-master"
+		"opine/cache": "dev-master",
+		"opine/db": "dev-master",
+		"opine/queue": "dev-master",
+		"opine/config": "dev-master"
     },
     "autoload": {
-        "psr-0": {"Twitter": "src/"}
+        "psr-4": {"Opine\\": "src/"}
     }
 }
