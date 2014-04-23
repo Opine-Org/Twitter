@@ -17,10 +17,10 @@
     	"php": ">=5.4.0",
 		"j7mbo/twitter-api-php": "dev-master",
                 "nojimage/twitter-text-php": "1.1.1",
-		"opine/cache": ">=v1.0",
-		"opine/db": ">=v1.0",
-		"opine/queue": ">=v1.0",
-		"opine/config": ">=v1.0"
+		"opine/cache": "v1.*",
+		"opine/db": "v1.*",
+		"opine/queue": "v1.*",
+		"opine/config": "v1.*"
     },
     "autoload": {
         "psr-4": {"Opine\\": "src/"}
