@@ -99,15 +99,15 @@ class Twitter {
             $twtData = $twitter->setGetfield($getfield)->buildOauth($url, $requestMethod)->performRequest();
         } catch (\Exception $e) {
 //FIXME: monolog?
-            $this->cache->set($key, '', 0, $expire);
+            $this->cache->set($key, '', $expire);
             return false;
         }
         var_dump($twtData);flush();
         if ($twtData === false) {
-            $this->cache->set($key, '', 0, $expire);
+            $this->cache->set($key, '', $expire);
             return false;
         }
-        $this->cache->set($key, $twtData, 0, $expire);
+        $this->cache->set($key, $twtData, $expire);
         $twtData = json_decode($twtData, true);
         if (isset($twtData['error']) || !is_array($twtData) || count($twtData) == 0) {
             return false;
