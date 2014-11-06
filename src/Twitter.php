@@ -67,12 +67,12 @@ class Twitter {
     public function save($type, $value, Array $tweets) {
         foreach ($tweets as $tweet) {
             $tweet['key'] = $type . '-' . $value;
+            $tweet['acl'] = ['public'];
             $tweet['created_date'] = new \MongoDate(strtotime($tweet['created_at']));
             $this->db->collection('tweets')->update(
                 ['id_str' => $tweet['id_str']], 
                 $tweet, 
-                ['upsert' => true],
-                ['acl' => ['public']]
+                ['upsert' => true]
             );
         }
         $this->db->collection('tweets')->ensureIndex(['key' => 1, 'id_str' => 1]);
