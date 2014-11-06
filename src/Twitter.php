@@ -71,7 +71,8 @@ class Twitter {
             $this->db->collection('tweets')->update(
                 ['id_str' => $tweet['id_str']], 
                 $tweet, 
-                ['upsert' => true]
+                ['upsert' => true],
+                ['acl' => ['public']]
             );
         }
         $this->db->collection('tweets')->ensureIndex(['key' => 1, 'id_str' => 1]);
