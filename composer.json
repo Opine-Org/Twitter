@@ -1,5 +1,5 @@
 {
-    "name": "opine\/twitter",
+    "name": "foo\/twitter",
     "type": "library",
     "minimum-stability": "dev",
     "description": "Cache service for tweets",
@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Opine\\": "src\/"
+            "Foo\\": "src\/"
         }
     }
 }
